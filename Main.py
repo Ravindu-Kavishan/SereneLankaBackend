@@ -15,11 +15,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://serenelanka002.netlify.app"],  
+    allow_origins=[
+        "https://serenelanka002.netlify.app",  # Netlify production
+        "http://localhost:3000",  # Local development
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  
-    allow_headers=["*"],  
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all HTTP headers
 )
+
 
 
 app.include_router(login_router, prefix="/auth", tags=["Login"])
