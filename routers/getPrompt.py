@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends, Response
 from pydantic import BaseModel
 from functions.RAG.genarateAnswer import ask_question
 import requests
-import re
 from functions.sepereteURLs import categorize_urls
 
 

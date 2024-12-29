@@ -1,8 +1,0 @@
-fastapi 
-uvicorn 
-openai
-pymongo
-motor
-passlib
-pydantic[email]
-bcrypt
