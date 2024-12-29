@@ -1,34 +1,3 @@
-# from motor.motor_asyncio import AsyncIOMotorClient
-# from pymongo.collection import Collection
-# from fastapi import  Depends
-
-# # MongoDB client instance
-# mongo_client: AsyncIOMotorClient = None
-
-# # Database name
-# DB_NAME = "SereneLanka"
-
-# async def connect_to_mongo():
-#     global mongo_client
-#     mongo_client = AsyncIOMotorClient("mongodb://localhost:27017")  # Local MongoDB connection
-#     print("Connected to MongoDB")
-
-# async def disconnect_from_mongo():
-#     global mongo_client
-#     if mongo_client:
-#         mongo_client.close()
-#         print("Disconnected from MongoDB")
-
-# def get_database():
-#     """Helper function to get the database instance"""
-#     return mongo_client[DB_NAME]
-
-# def get_user_collection(db=Depends(get_database)) -> Collection:
-#     return db["users"]
-
-# def get_chat_collection(db=Depends(get_database)) -> Collection:
-#     return db["chats"]
-
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.collection import Collection
 from fastapi import Depends
