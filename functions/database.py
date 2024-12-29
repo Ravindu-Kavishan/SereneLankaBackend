@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.collection import Collection
 from fastapi import Depends
-from pymongo import MongoClient
+import urllib.parse
 
 # MongoDB client instance
 mongo_client: AsyncIOMotorClient = None
@@ -10,13 +10,21 @@ mongo_client: AsyncIOMotorClient = None
 DB_NAME = "SereneLanka"
 
 # Connection string for MongoDB Atlas
-MONGO_URL = "mongodb+srv://SereneLanka:2002%40Kavi@cluster0.bcd53.mongodb.net/?retryWrites=true&w=majority"
-port = 8000
+# URL encode the password to handle special characters
+username = "SereneLanka"
+password = urllib.parse.quote_plus("2002@Kavi")
+MONGO_URL = f"mongodb+srv://{username}:{password}@cluster0.bcd53.mongodb.net/?retryWrites=true&w=majority"
 
 async def connect_to_mongo():
     global mongo_client
-    mongo_client = MongoClient(MONGO_URL,port)
-    print("Connected to MongoDB Atlas")
+    try:
+        # Use AsyncIOMotorClient instead of MongoClient
+        mongo_client = AsyncIOMotorClient(MONGO_URL)
+        # Verify connection
+        await mongo_client.admin.command('ping')
+        print("Connected to MongoDB Atlas successfully")
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
 
 async def disconnect_from_mongo():
     global mongo_client
@@ -24,12 +32,14 @@ async def disconnect_from_mongo():
         mongo_client.close()
         print("Disconnected from MongoDB Atlas")
 
-def get_database():
-    """Helper function to get the database instance"""
+async def get_database():
+    """Async helper function to get the database instance"""
+    if not mongo_client:
+        await connect_to_mongo()
     return mongo_client[DB_NAME]
 
-def get_user_collection(db=Depends(get_database)) -> Collection:
+async def get_user_collection(db = Depends(get_database)) -> Collection:
     return db["users"]
 
-def get_chat_collection(db=Depends(get_database)) -> Collection:
+async def get_chat_collection(db = Depends(get_database)) -> Collection:
     return db["chats"]
