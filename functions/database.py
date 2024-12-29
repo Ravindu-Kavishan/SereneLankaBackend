@@ -12,7 +12,7 @@ DB_NAME = "SereneLanka"
 # Connection string for MongoDB Atlas
 # URL encode the password to handle special characters
 username = "SereneLanka"
-password = urllib.parse.quote_plus("2002@Kavi")
+password = urllib.parse.quote_plus("ravindu2002")
 MONGO_URL = f"mongodb+srv://{username}:{password}@cluster0.bcd53.mongodb.net/?retryWrites=true&w=majority"
 
 async def connect_to_mongo():
