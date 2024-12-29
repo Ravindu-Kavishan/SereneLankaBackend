@@ -1,6 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.collection import Collection
 from fastapi import Depends
+import ssl
 
 # MongoDB client instance
 mongo_client: AsyncIOMotorClient = None
@@ -13,7 +14,12 @@ MONGO_URL = "mongodb+srv://SereneLanka:2002%40Kavi@cluster0.bcd53.mongodb.net/?r
 
 async def connect_to_mongo():
     global mongo_client
-    mongo_client = AsyncIOMotorClient(MONGO_URL)  # MongoDB Atlas connection
+    mongo_client = AsyncIOMotorClient(
+    MONGO_URL,
+    tls=True,
+    tlsAllowInvalidCertificates=False,  # Ensure proper SSL validation
+    serverSelectionTimeoutMS=5000  # Timeout in milliseconds
+)
     print("Connected to MongoDB Atlas")
 
 async def disconnect_from_mongo():
